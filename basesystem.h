@@ -4,18 +4,26 @@
 class BaseSystem {
 	int base_num = 0;
 	DataBase * cur_base;
-	std::unordered_map<std::string, DataBase> bases;
+	std::unordered_map<std::string, DataBase*> bases;
 public:
+	~BaseSystem() {
+		for (auto it = bases.begin(); it != bases.end(); it++) {
+			delete it->second;
+		}
+	}
+	
 	void addBase(const std::string & name);
 
 	void setBase(const std::string & name) {
 		//未考虑找不到的情况
-		cur_base = &bases[name];
+		cur_base = bases[name];
 	}
 
 	void setTable(std::string & _info) {
 		cur_base->setTable(_info);
 	}
+
+	void dropBase(const std::string & info);
 
 	void updateData(std::string& _info)
 	{

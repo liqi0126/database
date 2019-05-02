@@ -16,6 +16,12 @@ public:
 		Type = _Type;
 	}
 
+	~Attr() {
+		for (auto it : attr) {
+			delete it;
+		}
+	}
+
 	std::string getName() {
 		return Name;
 	}
@@ -33,6 +39,8 @@ public:
 	}
 
 	void cleanData() {
+		for (auto it : attr)
+			delete it;
 		attr.clear();
 	}
 

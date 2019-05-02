@@ -7,8 +7,8 @@ void DataBase::setTable(std::string & _info) {
 	std::string Tablename;
 	getline(info, Tablename, '(');
 
-	Table table;
-	table.init(_info);
+	Table *table = new Table;
+	table->init(_info);
 	tables[Tablename] = table;
 	table_num++;
 }
@@ -17,7 +17,7 @@ void DataBase::updateData(std::string& _info)
 	std::istringstream info(_info);
 	std::string Tablename;
 	info >> Tablename;
-	tables[Tablename].updateData(info);
+	tables[Tablename]->updateData(info);
 }
 
 void DataBase::addData(std::string & _info) {
@@ -26,7 +26,7 @@ void DataBase::addData(std::string & _info) {
 	info >> Tablename;
 	getline(info, Tablename, ' ');
 	getline(info, Tablename, '(');
-	tables[Tablename].addData(_info);
+	tables[Tablename]->addData(_info);
 }
 
 void DataBase::select(std::string & _info) {
@@ -43,7 +43,7 @@ void DataBase::select(std::string & _info) {
 	else {
 		whereClause = "";
 	}
-	tables[name].select(_info, whereClause);
+	tables[name]->select(_info, whereClause);
 }
 
 void DataBase::Delete(std::string & _info) {
@@ -59,5 +59,5 @@ void DataBase::Delete(std::string & _info) {
 	else {
 		whereClause = "";
 	}
-	tables[name].Delete(whereClause);
+	tables[name]->Delete(whereClause);
 }

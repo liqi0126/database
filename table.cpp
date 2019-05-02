@@ -11,6 +11,7 @@ void Table::init(std::string & _info) {
 	std::string data;
 	getline(info, data, '(');
 	while (getline(info, data, ',')) {
+		if (*data.rbegin() == ')') data.pop_back();
 		//ÉèÖÃÖ÷¼ü
 		bool iskey = false;
 		int x = data.find("PRIMARY KEY");
@@ -25,7 +26,7 @@ void Table::init(std::string & _info) {
 					break;
 				}
 			}
-			break;
+			continue;
 		}
 
 		bool notnull = false;
@@ -152,7 +153,7 @@ std::string Table::getRow(Data* data) {
 void Table::setRows() {
 	//Çå³ırows
 	rows.clear();
-	std::list<Data*> temp = attrs[1]->getDatas();
+	std::list<Data*> temp = attrs[0]->getDatas();
 	for (auto it : temp) {
 		rows.push_back(getRow(it));
 	}

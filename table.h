@@ -22,6 +22,12 @@ protected:
 	//WhereClause
 	WhereClause WC;
 public:
+	~Table() {
+		for (auto it : attrs) {
+			delete it;
+		}
+	}
+
 	//初始化Table的attrs信息（name和type)
 	void init(std::string & _info);
 	//为attrs添加数据

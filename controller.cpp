@@ -22,12 +22,14 @@ void Controller::operate() {
 				system.setTable(order);
 			}
 			else {
-				std::cout << "WTF??" << std::endl;
+				std::cout << "未识别的命令" << std::endl;
 			}
 		}
 		//删除数据库
 		else if (order == "DROP") {
-
+			getline(myinput, order, ' ');
+			getline(myinput, order);
+			system.dropBase(order);
 		}
 		//切换数据库
 		else if (order == "USE") {
@@ -57,7 +59,7 @@ void Controller::operate() {
 		}
 		//表的查询
 		//实现whereClauses语句
-		else if (order == "select") {
+		else if (order == "SELECT") {
 			getline(myinput, order, ' ');
 			getline(myinput, order);
 			system.select(order);
