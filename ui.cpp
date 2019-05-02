@@ -2,11 +2,11 @@
 #include <iostream>
 #include <sstream>
 
-//ÕıÔò»¯Ô­Ôò
-//1.»»ĞĞ·ûÊÓ×÷¿Õ¸ñ
-//2.¶à¸öÁ¬Ğø¿Õ¸ñÖ»±£ÁôÒ»¸ö¿Õ¸ñ
-//3.È¥³ı×óÀ¨ºÅ¡¢ÓÒÀ¨ºÅ¡¢¶ººÅ¡¢µÈºÅÁ½²àµÄ¿Õ¸ñ
-//4.WHEREÓï¾äµÄÀ¨ºÅÁ½²à¶¼±£ÁôÒ»¸ö¿Õ¸ñ
+//ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
+//1.ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½
+//2.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Õ¸ï¿½
+//3.È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½ï¿½ï¿½ï¿½Å¡ï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Õ¸ï¿½
+//4.WHEREï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à¶¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Õ¸ï¿½
 void UI::preProcess(std::string& sentence) {
 	int x1 = -1;
 	while (1)
@@ -21,8 +21,8 @@ void UI::preProcess(std::string& sentence) {
 	while (1)
 	{
 		x1 = sentence.find(' ', x1 + 1);
-		if (x1 == sentence.npos)break;//ÕÒ²»µ½¿Õ¸ñ
-		if (x1 == sentence.size() - 1)//ÕÒµ½µÄ¿Õ¸ñÊÇ×îºóÒ»¸ö×Ö·û
+		if (x1 == sentence.npos)break;//ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½
+		if (x1 == sentence.size() - 1)//ï¿½Òµï¿½ï¿½Ä¿Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½
 		{
 			sentence.erase(x1, 1);
 			break;
@@ -145,8 +145,10 @@ void UI::preProcess(std::string& sentence) {
 }
 
 std::stringstream UI::getCommand() {
+	/*	
 	if (std::cin.rdbuf()->in_avail() == 0 || std::cin.rdbuf()->in_avail() == 1)
 		std::cout << "mysql>";
+	*/
 	std::string sentence;
 	getline(std::cin, sentence, ';');
 	preProcess(sentence);

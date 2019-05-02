@@ -61,3 +61,35 @@ void DataBase::Delete(std::string & _info) {
 	}
 	tables[name]->Delete(whereClause);
 }
+
+void DataBase::showTable() {//输出表名 
+	for (auto it = tables.begin(); it != tables.end(); it++) {
+		auto its = find(table_header.begin(), table_header.end(), it->first);
+		if (its == table_header.end())
+			table_header.push_back(it->first);
+	}
+	sort(table_header.begin(), table_header.end());
+	for (auto it = table_header.begin(); it != table_header.end(); it++) {
+		std::cout << *it << std::endl;
+	}
+}
+
+void DataBase::show_table_colums(const std::string& table_name) {
+	auto its = tables.find(table_name);
+	if (its != tables.end()) {
+		tables[table_name]->show_table_colums();
+	}
+	else std::cout << "NULL" << std::endl;
+}
+
+void DataBase::dropTable(std::string& table_name) {
+	if (tables.find(table_name) == tables.end()) {
+		std::cout << "未找到要删除的数据表" << std::endl;
+	}
+	else {
+		auto era = find(table_header.begin(), table_header.end(), table_name);
+		delete tables[table_name];
+		tables.erase(table_name);
+		table_header.erase(era);
+	}
+}

@@ -12,7 +12,7 @@ void Table::init(std::string & _info) {
 	getline(info, data, '(');
 	while (getline(info, data, ',')) {
 		if (*data.rbegin() == ')') data.pop_back();
-		//ÉèÖÃÖ÷¼ü
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		bool iskey = false;
 		int x = data.find("PRIMARY KEY");
 		if (x != data.npos) {
@@ -32,14 +32,14 @@ void Table::init(std::string & _info) {
 		bool notnull = false;
 		x = data.find("NOT NULL");
 		if (x != data.npos) {
-			//ÉèÖÃ·Ç¿ÕÏî
+			//ï¿½ï¿½ï¿½Ã·Ç¿ï¿½ï¿½ï¿½
 			notnull = true;
 			not_null.push_back(attr_num);
-			//É¾³ýNOT NULL
+			//É¾ï¿½ï¿½NOT NULL
 			data.erase(x - 1, 9);
 		}
 
-		//Ìí¼ÓÊôÐÔ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		x = data.find(' ');
 		std::string name = data.substr(0, x);
 		std::string type = data.substr(x + 1);
@@ -62,7 +62,7 @@ void Table::addData(std::string & _info) {
 	int x;
 	std::string name;
 
-	//Ìí¼ÓÊôÐÔ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	while ((x = data.find_first_of(',')) != data.npos) {
 		name = data.substr(0, x);
 		data = data.substr(x + 1);
@@ -81,28 +81,28 @@ void Table::addData(std::string & _info) {
 		}
 	}
 
-	//¼ì²énotnull
+	//ï¿½ï¿½ï¿½notnull
 	for (auto it : not_null) {
 		if (find(attrId.begin(), attrId.end(), it) == attrId.end()) {
-			std::cout << attrs[it]->getName() << "²»ÔÊÐíÎª¿Õ£¡";
+			std::cout << attrs[it]->getName() << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½";
 			return;
 		}
 	}
 
-	//Êý¾Ý
+	//ï¿½ï¿½ï¿½ï¿½
 	std::string new_row;
 	std::vector<Data*> new_attr;
 	getline(info, data, '(');
 	getline(info, data, ')');
 	for (int i = 0; i < attr_num; i++) {
-		//²éÕÒÊÇ·ñÓÐÏàÓ¦µÄÊý¾Ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		size_t j;
 		for (j = 0; j < attrId.size(); j++) {
 			if (attrId[j] == i) {
 				break;
 			}
 		}
-		//¸³Öµ
+		//ï¿½ï¿½Öµ
 		if (j != attrId.size()) {
 			new_row += getData(data, j);
 			Data *p;
@@ -123,7 +123,7 @@ void Table::addData(std::string & _info) {
 	}
 	rows.push_back(new_row);
 
-	//¼ÓÈëµ½attrÖÐ
+	//ï¿½ï¿½ï¿½ëµ½attrï¿½ï¿½
 	for (size_t i= 0; i < new_attr.size(); i++) {
 		if (i == 0) {
 			new_attr[i]->setSuc(new_attr[i + 1]);
@@ -157,7 +157,7 @@ std::string Table::getRow(Data* data) {
 }
 
 void Table::setRows() {
-	//Çå³ýrows
+	//ï¿½ï¿½ï¿½rows
 	rows.clear();
 	std::list<Data*> temp = attrs[key]->getDatas();
 	for (auto it : temp) {
@@ -186,7 +186,7 @@ std::vector<Data*> Table::separateRow(std::string _row) {
 		datas.push_back(p);
 		i++;
 	}
-	//½¨Á¢Á¬½Ó
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (size_t i = 0; i < datas.size(); i++) {
 		if (i == 0) {
 			datas[i]->setSuc(datas[i + 1]);
@@ -218,7 +218,7 @@ void Table::setAttrs() {
 void Table::select(std::string & _info, std::string & Clause) {
 	Sort();
 	if (_info == "*") {
-		//Êä³öÕýÔò»¯?
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 		for (auto it : rows) {
 			if (WC.whereclause(it, Clause,attrs))
 				std::cout << it << std::endl;
@@ -273,7 +273,7 @@ void Table::Delete(std::string & Clause) {
 	setAttrs();
 }
 
-//¿¼ÂÇ´ÓÁÐÀ´¸üÐÂÊµÏÖÂß¼­¸üÇåÎú£¿
+//ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void Table::updateData(std::istringstream& info)
 {
 	//UPDATE xxtable SET attrName = attrValue WHERE XXXXX;
@@ -286,14 +286,14 @@ void Table::updateData(std::istringstream& info)
 	while (attrs[index]->getName() != data && index < attr_num)index++;
 	if (index == attr_num) std::cout << "error" << std::endl;
 	info >> std::ws;//'='
-	info >> value;//µÃµ½value
+	info >> value;//ï¿½Ãµï¿½value
 	info >> data;//"WHERE"
 	if (data != "WHERE") data = "";
-	else getline(info, data);//µÃµ½Ìõ¼þÓï¾ä
-	//todo:ÊµÏÖWHERECLAUSE
+	else getline(info, data);//ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//todo:Êµï¿½ï¿½WHERECLAUSE
 	for (std::list<std::string>::iterator it = rows.begin(); it != rows.end(); it++)
 	{
-		if (WC.whereclause(*it, data,attrs))//±éÀúÁ´±í£¬¸ù¾ÝWHERECLAUSEÕÒµ½ÐÐ
+		if (WC.whereclause(*it, data,attrs))//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½WHERECLAUSEï¿½Òµï¿½ï¿½ï¿½
 		{
 			std::string& tmprow = *it;
 			if (attrs.size() > 1) {
@@ -310,4 +310,30 @@ void Table::updateData(std::istringstream& info)
 		}
 	}
 	setAttrs();
+}
+
+void Table::show_table_colums() {
+	std::cout << "Field   Type    Null    Key Default Extra" << std::endl;
+	for (int i = 0; i < attr_num; i++) {
+		std::cout << attrs[i]->getName() << " ";
+		std::string type = attrs[i]->getType();
+		transform(type.begin(), type.end(), type.begin(), ::tolower);
+		if (type == "int") {
+			std::cout << "int(11) ";
+		}
+		else {
+			if (type == "char")
+				std::cout << "char(1) ";
+			else std::cout << type << "  ";
+		}
+		auto inotnull = find(not_null.begin(), not_null.end(), i);
+		if (inotnull != not_null.end()) {
+			std::cout << "NO  ";
+		}
+		else std::cout << "YES ";
+		if (i == key) {
+			std::cout << "PRI NULL" << std::endl;
+		}
+		else std::cout << "    NULL" << std::endl;
+	}
 }

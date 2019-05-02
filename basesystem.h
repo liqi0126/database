@@ -5,6 +5,7 @@ class BaseSystem {
 	int base_num = 0;
 	DataBase * cur_base;
 	std::unordered_map<std::string, DataBase*> bases;
+	std::vector<std::string> bases_name;
 public:
 	~BaseSystem() {
 		for (auto it = bases.begin(); it != bases.end(); it++) {
@@ -23,8 +24,6 @@ public:
 		cur_base->setTable(_info);
 	}
 
-	void dropBase(const std::string & info);
-
 	void updateData(std::string& _info)
 	{
 		cur_base->updateData(_info);
@@ -40,4 +39,10 @@ public:
 	void Delete(std::string & _info) {
 		cur_base->Delete(_info);
 	}
+
+	void showBase();
+	void showTable(std::string& base_name);
+	void show_table_colums(std::string& base_name, std::string& table_name);
+	void dropBase(std::string& base_name);
+	void dropTable( std::string &base_name,std::string& table_name);
 };

@@ -4,16 +4,16 @@
 #include <vector>
 #include <iostream>
 #include <stack>
-
+#include <algorithm>
 class Table {
 protected:
-	//ÐÐÊý
+	//ï¿½ï¿½ï¿½ï¿½
 	int row_num = 0;
-	//ÊôÐÔÊý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	int attr_num = 0;
-	//ÒÔÁÐ´æ´¢µÄÐÅÏ¢
+	//ï¿½ï¿½ï¿½Ð´æ´¢ï¿½ï¿½ï¿½ï¿½Ï¢
 	std::vector<Attr*> attrs;
-	//ÒÔÐÐ´¢´æµÄÐÅÏ¢,²»Í¬ÊôÐÔÓÃ','¼ä¸ô
+	//ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢,ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','ï¿½ï¿½ï¿½
 	std::list<std::string> rows;
 	//KEY
 	int key = -1;
@@ -28,32 +28,33 @@ public:
 		}
 	}
 
-	//³õÊ¼»¯TableµÄattrsÐÅÏ¢£¨nameºÍtype)
+	//ï¿½ï¿½Ê¼ï¿½ï¿½Tableï¿½ï¿½attrsï¿½ï¿½Ï¢ï¿½ï¿½nameï¿½ï¿½type)
 	void init(std::string & _info);
-	//ÎªattrsÌí¼ÓÊý¾Ý
+	//Îªattrsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void addData(std::string & _info);
 
-	//ÓÉµ¥¸ödataµÃµ½Ò»ÐÐrow
+	//ï¿½Éµï¿½ï¿½ï¿½dataï¿½Ãµï¿½Ò»ï¿½ï¿½row
 	std::string getRow(Data* data);
-	//ÓÉattrsµÃµ½rows
+	//ï¿½ï¿½attrsï¿½Ãµï¿½rows
 	void setRows();
-	//ÓÉµÚi¸öÊôÐÔµÃµ½rows
+	//ï¿½Éµï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ÔµÃµï¿½rows
 	void setRows(int i);
 
-	//½«Ò»ÐÐrow·Ö½âÎªdata
+	//ï¿½ï¿½Ò»ï¿½ï¿½rowï¿½Ö½ï¿½Îªdata
 	std::vector<Data*> separateRow(std::string row);
-	//½«rowsµÃµ½attrs
+	//ï¿½ï¿½rowsï¿½Ãµï¿½attrs
 	void setAttrs();
 
-	//Ñ¡ÔñÊý¾Ý
+	//Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void select(std::string & _info, std::string & Clause);
 
-	//ÅÅÐò,Ä¬ÈÏ°´Ö÷¼üÅÅÐò
+	//ï¿½ï¿½ï¿½ï¿½,Ä¬ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void Sort();
 
-	//É¾³ýÊý¾Ý
+	//É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void Delete(std::string & Clause);
-	//¸üÐÂÊý¾Ý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void updateData(std::istringstream& _info);
+		void show_table_colums();
 };
 
