@@ -3,6 +3,26 @@
 #include <string>
 #include <list>
 
+bool datacompare(Data* a, Data* b);
+
+/*
+class DataCompare {
+	bool operator() (Data* a, Data* b) {
+		if (a->getType() == "INT") {
+			IntData* inta = dynamic_cast<IntData*>(a);
+			IntData* intb = dynamic_cast<IntData*>(b);
+			return inta->getValue() < intb->getValue();
+		}
+		else if (a->getType() == "DOUBLE") {
+			DoubleData* doublea = dynamic_cast<DoubleData*>(a);
+			DoubleData* doubleb = dynamic_cast<DoubleData*>(b);
+			return doublea->getValue() < doubleb->getValue();
+		}
+		return a->getData() < b->getData();
+	}
+}datacompare;
+*/
+
 class Attr {
 protected:
 	std::string Type;
@@ -26,6 +46,10 @@ public:
 		return Name;
 	}
 
+	std::string getType() {
+		return Type;
+	}
+
 	void setKey() {
 		Key = true;
 	}
@@ -46,5 +70,9 @@ public:
 
 	std::list<Data*> getDatas() {
 		return attr;
+	}
+
+	void Sort() {
+		attr.sort(datacompare);
 	}
 };

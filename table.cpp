@@ -105,11 +105,17 @@ void Table::addData(std::string & _info) {
 		//赋值
 		if (j != attrId.size()) {
 			new_row += getData(data, j);
-			Data *p = new Data(getData(data, j));
+			Data *p;
+			if (attrs[i]->getType() == "INT") { p = new IntData(getData(data, j)); }
+			else if (attrs[i]->getType() == "DOUBLE") { p = new DoubleData(getData(data, j)); }
+			else { p = new Data(getData(data, j)); }
 			new_attr.push_back(p);
 		}
 		else {
-			Data *p = new Data("");
+			Data *p;
+			if (attrs[i]->getType() == "INT") { p = new IntData(""); }
+			else if (attrs[i]->getType() == "DOUBLE") { p = new DoubleData(""); }
+			else { p = new Data(""); }
 			new_attr.push_back(p);
 		}
 		if (i != attr_num - 1)
@@ -153,7 +159,15 @@ std::string Table::getRow(Data* data) {
 void Table::setRows() {
 	//清除rows
 	rows.clear();
-	std::list<Data*> temp = attrs[0]->getDatas();
+	std::list<Data*> temp = attrs[key]->getDatas();
+	for (auto it : temp) {
+		rows.push_back(getRow(it));
+	}
+}
+
+void Table::setRows(int i) {
+	rows.clear();
+	std::list<Data*> temp = attrs[i]->getDatas();
 	for (auto it : temp) {
 		rows.push_back(getRow(it));
 	}
@@ -163,9 +177,14 @@ std::vector<Data*> Table::separateRow(std::string _row) {
 	std::istringstream row(_row);
 	std::vector<Data*> datas;
 	std::string data;
+	int i = 0;
 	while (getline(row, data, ',')) {
-		Data * p = new Data(data);
+		Data * p;
+		if (attrs[i]->getType() == "INT") { p = new IntData(data); }
+		else if (attrs[i]->getType() == "DOUBLE") { p = new DoubleData(data); }
+		else { p = new Data(data); }
 		datas.push_back(p);
+		i++;
 	}
 	//建立连接
 	for (size_t i = 0; i < datas.size(); i++) {
@@ -197,6 +216,7 @@ void Table::setAttrs() {
 }
 
 void Table::select(std::string & _info, std::string & Clause) {
+	Sort();
 	if (_info == "*") {
 		//输出正则化?
 		for (auto it : rows) {
@@ -232,6 +252,12 @@ void Table::select(std::string & _info, std::string & Clause) {
 			}
 		}
 	}
+}
+
+void Table::Sort() {
+	attrs[key]->Sort();
+	setRows();
+	setAttrs();
 }
 
 void Table::Delete(std::string & Clause) {

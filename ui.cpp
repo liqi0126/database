@@ -145,10 +145,8 @@ void UI::preProcess(std::string& sentence) {
 }
 
 std::stringstream UI::getCommand() {
-	/*
 	if (std::cin.rdbuf()->in_avail() == 0 || std::cin.rdbuf()->in_avail() == 1)
 		std::cout << "mysql>";
-	*/
 	std::string sentence;
 	getline(std::cin, sentence, ';');
 	preProcess(sentence);

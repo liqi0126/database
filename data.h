@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <sstream>
 
 class Data {
 protected:
@@ -17,6 +18,10 @@ public:
 	//数据的获取
 	virtual std::string getData() {
 		return data;
+	}
+	//类型的识别
+	virtual std::string getType() {
+		return "CHAR";
 	}
 
 	void setPre(Data *_pre) {
@@ -37,17 +42,47 @@ public:
 };
 
 class IntData : public Data {
+protected:
 	int value;
 public:
 	IntData(std::string _data) : Data(_data) {
 		value = stoi(data);
 	}
+
+	void setData(std::string _data) {
+		data = _data;
+		value = stoi(data);
+	}
+
+	int getValue() {
+		return value;
+	}
+
+	std::string getType() {
+		return "INT";
+	}
 };
 
-class BoolData : public Data {
-	bool value;
+class DoubleData : public Data {
+protected:
+	double value;
 public:
-	BoolData(std::string _data) : Data(_data) {
-		value = (data == "TRUE") ? true : false;
+	DoubleData(std::string _data) : Data(_data) {
+		std::stringstream data(_data);
+		data >> value;
+	}
+
+	void setData(std::string _data) {
+		data = _data;
+		std::stringstream data(_data);
+		data >> value;
+	}
+
+	double getValue() {
+		return value;
+	}
+
+	std::string getType() {
+		return "DOUBLE";
 	}
 };

@@ -37,6 +37,8 @@ public:
 	std::string getRow(Data* data);
 	//由attrs得到rows
 	void setRows();
+	//由第i个属性得到rows
+	void setRows(int i);
 
 	//将一行row分解为data
 	std::vector<Data*> separateRow(std::string row);
@@ -46,6 +48,8 @@ public:
 	//选择数据
 	void select(std::string & _info, std::string & Clause);
 
+	//排序,默认按主键排序
+	void Sort();
 
 	//删除数据
 	void Delete(std::string & Clause);
