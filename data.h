@@ -32,7 +32,9 @@ public:
 			return "NULL";
 		}
 		else {
-			return replaceAll(data,"\"","");
+			std::string cleandata = replaceAll(data, "\"", "");
+			cleandata = replaceAll(cleandata, "\'", "");
+			return cleandata;
 		}
 	}
 

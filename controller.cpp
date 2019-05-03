@@ -90,6 +90,7 @@ void Controller::operate() {
 			break;
 		}
 		else {
+			break;
 			std::cout << "未识别的命令" << std::endl;
 		}
 	}
