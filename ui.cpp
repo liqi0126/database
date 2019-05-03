@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <vector>
 
 //正则化原则
 //1.换行符视作空格
@@ -20,10 +21,30 @@ void UI::findKeywords(std::string& _info)
 {
 	std::string info(_info);
 	transform(info.begin(), info.end(), info.begin(), ::toupper);
-	std::string words[22] = { "CREATE","DATABASE","DATABASES","DROP","USE","SHOW","TABLE",
-		"NOT","NULL","PRIMARY","KEY","TABLES","COLUMNS","FROM","INSERT",
-		"INTO","VALUES","DELETE","WHERE","UPDATE","SET","SELECT" };
-	for (int i = 0; i < 22; i++)
+	std::vector<std::string> words;
+	words.push_back("CREATE");
+	words.push_back("DATABASE");
+	words.push_back("DATABASES");
+	words.push_back("DROP");
+	words.push_back("USE");
+	words.push_back("SHOW");
+	words.push_back("TABLE");
+	words.push_back("NOT");
+	words.push_back("NULL");
+	words.push_back("PRIMARY");
+	words.push_back("KEY");
+	words.push_back("COLUMNS");
+	words.push_back("FROM");
+	words.push_back("INSERT");
+	words.push_back("INTO");
+	words.push_back("VALUES");
+	words.push_back("WHERE");
+	words.push_back("UPDATE");
+	words.push_back("SET");
+	words.push_back("SELECT");
+	words.push_back("AND");
+	words.push_back("OR");
+	for (size_t i = 0; i < words.size(); i++)
 	{
 		int x = -1;
 		while (true)
@@ -33,8 +54,6 @@ void UI::findKeywords(std::string& _info)
 			_info.replace(x, words[i].size(), words[i]);
 		}
 	}
-
-
 	return;
 }
 void UI::No_n(std::string& info)

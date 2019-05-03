@@ -5,7 +5,6 @@ class BaseSystem {
 	int base_num = 0;
 	DataBase * cur_base;
 	std::unordered_map<std::string, DataBase*> bases;
-	std::vector<std::string> bases_name;
 public:
 	~BaseSystem() {
 		for (auto it = bases.begin(); it != bases.end(); it++) {

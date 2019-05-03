@@ -30,7 +30,7 @@ void DataBase::addData(std::string & _info) {
 }
 
 void DataBase::select(std::string & _info) {
-	int x1 = _info.find("from");
+	int x1 = _info.find("FROM");
 	std::string name = _info.substr(x1 + 5);
 	_info = _info.substr(0, x1 - 1);
 

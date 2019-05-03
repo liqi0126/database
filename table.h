@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stack>
 #include <algorithm>
+
 class Table {
 protected:
 	//行数

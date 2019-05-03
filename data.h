@@ -2,6 +2,9 @@
 #include <string>
 #include <sstream>
 
+//将str中所有的origin替换为sub
+std::string replaceAll(std::string str, std::string origin, std::string sub);
+
 class Data {
 protected:
 	std::string data;
@@ -22,6 +25,15 @@ public:
 	//类型的识别
 	virtual std::string getType() {
 		return "CHAR";
+	}
+
+	virtual std::string showData() {
+		if (data == "") {
+			return "NULL";
+		}
+		else {
+			return replaceAll(data,"\"","");
+		}
 	}
 
 	void setPre(Data *_pre) {
@@ -56,6 +68,15 @@ public:
 			value = stoi(data);
 	}
 
+	std::string showData() {
+		if (data == "") {
+			return "NULL";
+		}
+		else {
+			return data;
+		}
+	}
+
 	int getValue() {
 		return value;
 	}
@@ -84,6 +105,8 @@ public:
 		}
 	}
 
+	std::string showData();
+
 	double getValue() {
 		return value;
 	}
@@ -92,3 +115,6 @@ public:
 		return "DOUBLE";
 	}
 };
+
+//得到data这一行的第i个数据
+Data* get_Data_i(Data* data, int i);

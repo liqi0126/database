@@ -12,24 +12,20 @@ void BaseSystem::dropBase(std::string & base_name) {
 		std::cout << "未找到要删除的数据库" << std::endl;
 	}
 	else {
-		auto post = find(bases_name.begin(), bases_name.end(), base_name);
 		delete bases[base_name];
 		bases.erase(base_name);
-		bases_name.erase(post);
 	}
 }
 
 void BaseSystem::showBase() {
+	std::vector<std::string> bases_name;
 	std::cout << "Database" << std::endl;
-	for (auto it = bases.begin(); it != bases.end(); it++) {
-		auto name = find(bases_name.begin(), bases_name.end(), it->first);
-		if (name == bases_name.end()) {
-			bases_name.push_back(it->first);
-		}
+	for (auto it : bases) {
+		bases_name.push_back(it.first);
 	}
 	sort(bases_name.begin(), bases_name.end());
-	for (auto its = bases_name.begin(); its != bases_name.end(); its++) {
-		std::cout << *its << std::endl;
+	for (auto it : bases_name) {
+		std::cout << it << std::endl;
 	}
 }
 
