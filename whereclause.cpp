@@ -16,8 +16,8 @@ WhereClause::WhereClause() {
 	//默认优先级
 	priority.insert(std::pair<std::string, int>("(", 0));
 	priority.insert(std::pair<std::string, int>(")", -1));
-	priority.insert(std::pair<std::string, int>("and", -2));
-	priority.insert(std::pair<std::string, int>("or", -3));
+	priority.insert(std::pair<std::string, int>("AND", -2));
+	priority.insert(std::pair<std::string, int>("OR", -3));
 }
 
 void WhereClause::setPostfix(std::string _clause) {
@@ -55,7 +55,7 @@ void WhereClause::setPostfix(std::string _clause) {
 	}
 }
 
-bool WhereClause::Judge(std::string judge, const std::string & data, const std::vector<Attr*> & attrs) {
+bool WhereClause::Judge(std::string judge, const std::string& data, const std::vector<Attr*> & attrs) {
 	if (judge == "TRUE") {
 		return true;
 	}
@@ -68,17 +68,18 @@ bool WhereClause::Judge(std::string judge, const std::string & data, const std::
 			temp = judge.find('<');
 		if (temp == judge.npos)
 			temp = judge.find('=');
-
+		std::string Type = "CHAR";
 		std::string left = judge.substr(0, temp);
 		std::string right = judge.substr(temp + 1);
-
 		int attr_num = attrs.size();
 		for (int i = 0; i < attr_num; i++) {
 			if (attrs[i]->getName() == left) {
 				left = getData(data, i);
+				Type = attrs[i]->getType();
 			}
 			if (attrs[i]->getName() == right) {
 				right = getData(data, i);
+				Type = attrs[i]->getType();
 			}
 		}
 
@@ -86,11 +87,15 @@ bool WhereClause::Judge(std::string judge, const std::string & data, const std::
 			return left == right;
 		}
 		else {
-			int L = stoi(left), R = stoi(right);
-			if (judge[temp] == '>')
-				return (L > R) ? true : false;
+			if (Type == "INT") {
+				int L = (left == "") ? 0 : stoi(left), R = (right == "") ? 0 : stoi(right);
+				if (judge[temp] == '>') { return (L > R) ? true : false; }
+				else { return (L < R) ? true : false; }
+			}
 			else {
-				return (L < R) ? true : false;
+				double L = (left == "") ? 0.0 : stof(left), R = (right == "") ? 0.0 : stof(right);
+				if (judge[temp] == '>') { return (L > R) ? true : false; }
+				else { return (L < R) ? true : false; }
 			}
 		}
 	}
@@ -102,7 +107,7 @@ void WhereClause::Calc(std::stack<std::string> & Oper, std::string & Arr, const 
 	std::string oper2 = Oper.top();
 	Oper.pop();
 	bool judge, judge1 = Judge(oper1, data, attrs), judge2 = Judge(oper2, data, attrs);
-	if (Arr == "and") {
+	if (Arr == "AND") {
 		judge = judge1 && judge2;
 	}
 	else {

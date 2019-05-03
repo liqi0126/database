@@ -6,15 +6,22 @@
 #include <list>
 #include <map>
 
-//将str中所有的origin替换为sub
-std::string replaceAll(std::string str, std::string origin, std::string sub) {
-	int L1 = origin.length(), L2 = sub.length();
-	int x;
-	while ((x = str.find(origin)) != str.npos) {
-		str.replace(x, L1, sub);
+
+std::string Table::getRow(Data* data) {
+	while (data->getPre() != NULL)
+		data = data->getPre();
+
+	std::string row;
+
+	while (data->getSuc() != NULL) {
+		row += data->getData() + ",";
+		data = data->getSuc();
 	}
-	return str;
+	row += data->getData();
+
+	return row;
 }
+
 
 void Table::init(std::string & _info) {
 	std::istringstream info(_info);
@@ -150,20 +157,6 @@ void Table::addData(std::string & _info) {
 	}
 }
 
-std::string Table::getRow(Data* data) {
-	while (data->getPre() != NULL)
-		data = data->getPre();
-	
-	std::string row;
-
-	while (data->getSuc() != NULL) {
-		row += data->getData() + ",";
-		data = data->getSuc();
-	}
-	row += data->getData();
-	
-	return row;
-}
 
 void Table::setRows() {
 	//清除rows
@@ -225,6 +218,8 @@ void Table::setAttrs() {
 }
 
 void Table::select(std::string & _info, std::string & Clause) {
+	if (row_num == 0)
+		return;
 	Sort();
 	std::istringstream info(_info);
 	std::vector<std::string> names;
@@ -261,15 +256,20 @@ void Table::select(std::string & _info, std::string & Clause) {
 	std::cout << std::endl;
 
 	//输出数据
-	for (auto row : rows) {
-		if (WC.whereclause(row, Clause,attrs)) {
+	std::list<Data*> attr = attrs[key]->getDatas();
+	for (auto data : attr) {
+		if (WC.whereclause(getRow(data), Clause, attrs)) {
 			size_t i = 0;
 			for (; i < output.size(); i++) {
+				Data* p = get_Data_i(data, output[i]);
+				if (p->getType() == "INT") {	p = dynamic_cast<IntData*>(p);	}
+				else if (p->getType() == "DOUBLE") { p = dynamic_cast<DoubleData*>(p); }
+
 				if (i == output.size() - 1) {
-					std::cout << getData(row, output[i]) << std::endl;
+					std::cout << p->showData() << std::endl;
 				}
 				else {
-					std::cout << getData(row, output[i]) << "\t";
+					std::cout << p->showData() << "\t";
 				}
 			}
 		}
