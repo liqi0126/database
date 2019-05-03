@@ -1,14 +1,14 @@
-#include "ui.h"
+﻿#include "ui.h"
 #include <iostream>
 #include <sstream>
 
-//����ԭ��
-//1.���з������ո�
-//2.��������ո�ֻ����һ���ո�
-//3.ȥ�������š������š����š��Ⱥ�����Ŀո�
-//4.WHERE�����������඼����һ���ո�
+//正则化原则
+//1.换行符视作空格
+//2.多个连续空格只保留一个空格
+//3.去除左括号、右括号、逗号、等号两侧的空格
+//4.WHERE语句的括号两侧都保留一个空格
 void UI::preProcess(std::string& sentence) {
-	int x1 = -1;
+	size_t x1 = -1;
 	while (1)
 	{
 		x1 = sentence.find('\n', x1 + 1);
@@ -21,8 +21,8 @@ void UI::preProcess(std::string& sentence) {
 	while (1)
 	{
 		x1 = sentence.find(' ', x1 + 1);
-		if (x1 == sentence.npos)break;//�Ҳ����ո�
-		if (x1 == sentence.size() - 1)//�ҵ��Ŀո������һ���ַ�
+		if (x1 == sentence.npos)break;//找不到空格
+		if (x1 == sentence.size() - 1)//找到的空格是最后一个字符
 		{
 			sentence.erase(x1, 1);
 			break;
@@ -81,7 +81,7 @@ void UI::preProcess(std::string& sentence) {
 		else break;
 	}
 	x1 = -1;
-	int x2 = 0;
+	size_t x2 = 0;
 	while (1)
 	{
 		x2 = sentence.find("WHERE", 0);

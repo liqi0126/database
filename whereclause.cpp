@@ -1,11 +1,11 @@
-#include "whereclause.h"
+ï»¿#include "whereclause.h"
 #include <sstream>
-//´ÓÒ»ĞĞÓÃ¶ººÅ·Ö¸ôµÄĞÅÏ¢ÖĞÕÒµ½µÚi¸öÊı¾İ
-std::string getData(std::string data, int i) {
+//ä»ä¸€è¡Œç”¨speråˆ†éš”çš„ä¿¡æ¯ä¸­æ‰¾åˆ°ç¬¬iä¸ªæ•°æ®
+std::string getData(std::string data, int i, char sper) {
 	int x1 = -1;
 	while (i--)
-		x1 = data.find(',', x1 + 1);
-	int x2 = data.find(',', x1 + 1);
+		x1 = data.find(sper, x1 + 1);
+	int x2 = data.find(sper, x1 + 1);
 	if (x2 == data.npos)
 		x2 = data.length();
 
@@ -13,7 +13,7 @@ std::string getData(std::string data, int i) {
 }
 
 WhereClause::WhereClause() {
-	//Ä¬ÈÏÓÅÏÈ¼¶
+	//é»˜è®¤ä¼˜å…ˆçº§
 	priority.insert(std::pair<std::string, int>("(", 0));
 	priority.insert(std::pair<std::string, int>(")", -1));
 	priority.insert(std::pair<std::string, int>("AND", -2));
@@ -121,14 +121,14 @@ bool WhereClause::whereclause(const std::string & data, const std::string & _cla
 		return true;
 	}
 
-	//×ªÎªºó×º±í´ïÊ½
-	//½«ºó×º±í´ïÊ½ÉèÎª¾²Ì¬²¢½øĞĞÅĞ¶Ï£¬ÒÔ·ÀÖ¹¶ÔÍ¬Ò»±í´ïÊ½·´¸´¹¹Ôì
+	//è½¬ä¸ºåç¼€è¡¨è¾¾å¼
+	//å°†åç¼€è¡¨è¾¾å¼è®¾ä¸ºé™æ€å¹¶è¿›è¡Œåˆ¤æ–­ï¼Œä»¥é˜²æ­¢å¯¹åŒä¸€è¡¨è¾¾å¼åå¤æ„é€ 
 	static std::string copy = _clause;
 	if (Postfix.size() == 0 || copy != _clause) {
 		setPostfix(_clause);
 	}
 
-	//ºó×º±í´ïÊ½µÄ¼ÆËã
+	//åç¼€è¡¨è¾¾å¼çš„è®¡ç®—
 	std::stack<std::string> Oper;
 	for (size_t i = 0; i < Postfix.size(); i++) {
 		if (priority.find(Postfix[i]) != priority.end()) {

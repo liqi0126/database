@@ -1,4 +1,4 @@
-#include "database.h"
+ï»¿#include "database.h"
 #include <sstream>
 #include <iostream>
 
@@ -47,7 +47,7 @@ void DataBase::select(std::string & _info) {
 }
 
 void DataBase::Delete(std::string & _info) {
-	int x1 = _info.find("FROM");
+	int x1 = _info.find("from");
 	std::string name = _info.substr(x1 + 5);
 
 	int x2 = name.find("WHERE");
@@ -62,7 +62,7 @@ void DataBase::Delete(std::string & _info) {
 	tables[name]->Delete(whereClause);
 }
 
-void DataBase::showTable() {//Êä³ö±íÃû 
+void DataBase::showTable() {//è¾“å‡ºè¡¨å 
 	for (auto it = tables.begin(); it != tables.end(); it++) {
 		auto its = find(table_header.begin(), table_header.end(), it->first);
 		if (its == table_header.end())
@@ -84,7 +84,7 @@ void DataBase::show_table_colums(const std::string& table_name) {
 
 void DataBase::dropTable(std::string& table_name) {
 	if (tables.find(table_name) == tables.end()) {
-		std::cout << "Î´ÕÒµ½ÒªÉ¾³ýµÄÊý¾Ý±í" << std::endl;
+		std::cout << "æœªæ‰¾åˆ°è¦åˆ é™¤çš„æ•°æ®è¡¨" << std::endl;
 	}
 	else {
 		auto era = find(table_header.begin(), table_header.end(), table_name);

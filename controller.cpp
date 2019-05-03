@@ -1,15 +1,15 @@
-#include "controller.h"
+ï»¿#include "controller.h"
 #include <sstream>
 
 void Controller::operate() {
 	while (true) {
 		std::stringstream myinput = ui.getCommand();
 		static std::string order;
-		//ÊäÈëÃüÁî
+		//è¾“å…¥å‘½ä»¤
 		static std::string show;
 
 		myinput >> order;
-		//´´½¨Êı¾İ¿â»ò±íµ¥
+		//åˆ›å»ºæ•°æ®åº“æˆ–è¡¨å•
 		if (order == "CREATE") {
 			myinput >> order;
 			if (order == "DATABASE") {
@@ -23,17 +23,17 @@ void Controller::operate() {
 				system.setTable(order);
 			}
 			else {
-				std::cout << "Î´Ê¶±ğµÄÃüÁî" << std::endl;
+				std::cout << "æœªè¯†åˆ«çš„å‘½ä»¤" << std::endl;
 			}
 		}
-		//ÇĞ»»Êı¾İ¿â
+		//åˆ‡æ¢æ•°æ®åº“
 		else if (order == "USE") {
 			getline(myinput, order, ' ');
 			getline(myinput, order);
 			show = order;
 			system.setBase(order);
 		}
-		//É¾³ıÊı¾İ¿â
+		//åˆ é™¤æ•°æ®åº“
 		else if (order == "DROP") {
 			myinput >> order;
 			if (order == "DATABASE") {
@@ -47,7 +47,7 @@ void Controller::operate() {
 				system.dropTable(show,order);
 			}
 		}
-		//ÁĞ³öËùÓĞÊı¾İ¿â¼°Æä°üº¬µÄËùÓĞ±íÃû
+		//åˆ—å‡ºæ‰€æœ‰æ•°æ®åº“åŠå…¶åŒ…å«çš„æ‰€æœ‰è¡¨å
 		else if (order == "INSERT") {
 			getline(myinput, order, ' ');
 			getline(myinput, order);
@@ -68,19 +68,19 @@ void Controller::operate() {
 				system.show_table_colums(show, order);
 			}
 		}
-		//±íµÄÊı¾İÉ¾³ı
+		//è¡¨çš„æ•°æ®åˆ é™¤
 		else if (order == "DELETE") {
 			getline(myinput, order, ' ');
 			getline(myinput, order);
 			system.Delete(order);
 		}
-		//±íµÄÊı¾İĞŞ¸Ä
+		//è¡¨çš„æ•°æ®ä¿®æ”¹
 		else if (order == "UPDATE") {
 			getline(myinput, order);
 			system.updateData(order);
 		}
-		//±íµÄ²éÑ¯
-		//ÊµÏÖwhereClausesÓï¾ä
+		//è¡¨çš„æŸ¥è¯¢
+		//å®ç°whereClausesè¯­å¥
 		else if (order == "SELECT") {
 			getline(myinput, order, ' ');
 			getline(myinput, order);
@@ -90,7 +90,7 @@ void Controller::operate() {
 			break;
 		}
 		else {
-			std::cout << "Î´Ê¶±ğµÄÃüÁî" << std::endl;
+			std::cout << "æœªè¯†åˆ«çš„å‘½ä»¤" << std::endl;
 		}
 	}
 }

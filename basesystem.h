@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "database.h"
 
 class BaseSystem {
@@ -16,7 +16,7 @@ public:
 	void addBase(const std::string & name);
 
 	void setBase(const std::string & name) {
-		//Î´¿¼ÂÇÕÒ²»µ½µÄÇé¿ö
+		//æœªè€ƒè™‘æ‰¾ä¸åˆ°çš„æƒ…å†µ
 		cur_base = bases[name];
 	}
 

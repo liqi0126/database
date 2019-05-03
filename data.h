@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <sstream>
 
@@ -11,15 +11,15 @@ public:
 	Data(std::string _data) {
 		data = _data;
 	}
-	//Êı¾İµÄÉèÖÃ
+	//æ•°æ®çš„è®¾ç½®
 	virtual void setData(std::string _data) {
 		data = _data;
 	}
-	//Êı¾İµÄ»ñÈ¡
+	//æ•°æ®çš„è·å–
 	virtual std::string getData() {
 		return data;
 	}
-	//ÀàĞÍµÄÊ¶±ğ
+	//ç±»å‹çš„è¯†åˆ«
 	virtual std::string getType() {
 		return "CHAR";
 	}

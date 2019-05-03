@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 
 class UI {
 public:
-	//ÕâÀï×îºÃ°ÑÕıÔò»¯µÄ¸÷¸ö¹¦ÄÜ·Ö×°³É½Ó¿Ú£¬È»ºóÔÙÍ³Ò»ÕıÔò»¯
+	//è¿™é‡Œæœ€å¥½æŠŠæ­£åˆ™åŒ–çš„å„ä¸ªåŠŸèƒ½åˆ†è£…æˆæ¥å£ï¼Œç„¶åå†ç»Ÿä¸€æ­£åˆ™åŒ–
 	void preProcess(std::string&);
 	std::stringstream getCommand();
 };

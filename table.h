@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "attr.h"
 #include "whereclause.h"
 #include <vector>
@@ -7,13 +7,13 @@
 #include <algorithm>
 class Table {
 protected:
-	//����
+	//行数
 	int row_num = 0;
-	//������
+	//属性数
 	int attr_num = 0;
-	//���д洢����Ϣ
+	//以列存储的信息
 	std::vector<Attr*> attrs;
-	//���д������Ϣ,��ͬ������','���
+	//以行储存的信息,不同属性用','间隔
 	std::list<std::string> rows;
 	//KEY
 	int key = -1;
@@ -28,33 +28,33 @@ public:
 		}
 	}
 
-	//��ʼ��Table��attrs��Ϣ��name��type)
+	//初始化Table的attrs信息（name和type)
 	void init(std::string & _info);
-	//Ϊattrs��������
+	//为attrs添加数据
 	void addData(std::string & _info);
 
-	//�ɵ���data�õ�һ��row
+	//由单个data得到一行row
 	std::string getRow(Data* data);
-	//��attrs�õ�rows
+	//由attrs得到rows
 	void setRows();
-	//�ɵ�i�����Եõ�rows
+	//由第i个属性得到rows
 	void setRows(int i);
 
-	//��һ��row�ֽ�Ϊdata
+	//将一行row分解为data
 	std::vector<Data*> separateRow(std::string row);
-	//��rows�õ�attrs
+	//将rows得到attrs
 	void setAttrs();
 
-	//ѡ������
+	//选择数据
 	void select(std::string & _info, std::string & Clause);
 
-	//����,Ĭ�ϰ���������
+	//排序,默认按主键排序
 	void Sort();
 
-	//ɾ������
+	//删除数据
 	void Delete(std::string & Clause);
-	//��������
+	//更新数据
 	void updateData(std::istringstream& _info);
-		void show_table_colums();
+	void show_table_colums();
 };
 

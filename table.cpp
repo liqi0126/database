@@ -1,4 +1,4 @@
-#include "table.h"
+﻿#include "table.h"
 #include <sstream>
 #include <utility>
 #include <iostream>
@@ -6,13 +6,23 @@
 #include <list>
 #include <map>
 
+//将str中所有的origin替换为sub
+std::string replaceAll(std::string str, std::string origin, std::string sub) {
+	int L1 = origin.length(), L2 = sub.length();
+	int x;
+	while ((x = str.find(origin)) != str.npos) {
+		str.replace(x, L1, sub);
+	}
+	return str;
+}
+
 void Table::init(std::string & _info) {
 	std::istringstream info(_info);
 	std::string data;
 	getline(info, data, '(');
 	while (getline(info, data, ',')) {
 		if (*data.rbegin() == ')') data.pop_back();
-		//��������
+		//设置主键
 		bool iskey = false;
 		int x = data.find("PRIMARY KEY");
 		if (x != data.npos) {
@@ -32,14 +42,14 @@ void Table::init(std::string & _info) {
 		bool notnull = false;
 		x = data.find("NOT NULL");
 		if (x != data.npos) {
-			//���÷ǿ���
+			//设置非空项
 			notnull = true;
 			not_null.push_back(attr_num);
-			//ɾ��NOT NULL
+			//删除NOT NULL
 			data.erase(x - 1, 9);
 		}
 
-		//��������
+		//添加属性
 		x = data.find(' ');
 		std::string name = data.substr(0, x);
 		std::string type = data.substr(x + 1);
@@ -61,8 +71,7 @@ void Table::addData(std::string & _info) {
 	std::vector<int> attrId;
 	int x;
 	std::string name;
-
-	//��������
+	//添加属性
 	while ((x = data.find_first_of(',')) != data.npos) {
 		name = data.substr(0, x);
 		data = data.substr(x + 1);
@@ -81,28 +90,28 @@ void Table::addData(std::string & _info) {
 		}
 	}
 
-	//���notnull
+	//检查notnull
 	for (auto it : not_null) {
 		if (find(attrId.begin(), attrId.end(), it) == attrId.end()) {
-			std::cout << attrs[it]->getName() << "������Ϊ�գ�";
+			std::cout << attrs[it]->getName() << "不允许为空"<< std::endl;
 			return;
 		}
 	}
 
-	//����
+	//数据
 	std::string new_row;
 	std::vector<Data*> new_attr;
 	getline(info, data, '(');
 	getline(info, data, ')');
 	for (int i = 0; i < attr_num; i++) {
-		//�����Ƿ�����Ӧ������
+		//查找是否有相应的数据
 		size_t j;
 		for (j = 0; j < attrId.size(); j++) {
 			if (attrId[j] == i) {
 				break;
 			}
 		}
-		//��ֵ
+		//赋值
 		if (j != attrId.size()) {
 			new_row += getData(data, j);
 			Data *p;
@@ -123,7 +132,7 @@ void Table::addData(std::string & _info) {
 	}
 	rows.push_back(new_row);
 
-	//���뵽attr��
+	//加入到attr中
 	for (size_t i= 0; i < new_attr.size(); i++) {
 		if (i == 0) {
 			new_attr[i]->setSuc(new_attr[i + 1]);
@@ -157,7 +166,7 @@ std::string Table::getRow(Data* data) {
 }
 
 void Table::setRows() {
-	//���rows
+	//清除rows
 	rows.clear();
 	std::list<Data*> temp = attrs[key]->getDatas();
 	for (auto it : temp) {
@@ -186,7 +195,7 @@ std::vector<Data*> Table::separateRow(std::string _row) {
 		datas.push_back(p);
 		i++;
 	}
-	//��������
+	//建立连接
 	for (size_t i = 0; i < datas.size(); i++) {
 		if (i == 0) {
 			datas[i]->setSuc(datas[i + 1]);
@@ -218,10 +227,18 @@ void Table::setAttrs() {
 void Table::select(std::string & _info, std::string & Clause) {
 	Sort();
 	if (_info == "*") {
-		//�������?
+		for (auto it = attrs.begin(); it != attrs.end(); it++) {
+			if(it != --attrs.end())
+				std::cout << (*it)->getName() << '\t';
+			else {
+				std::cout << (*it)->getName();
+			}
+		}
+		std::cout << std::endl;
+
 		for (auto it : rows) {
 			if (WC.whereclause(it, Clause,attrs))
-				std::cout << it << std::endl;
+				std::cout << replaceAll(it,",","\t") << std::endl;
 		}
 	}
 	else {
@@ -241,12 +258,21 @@ void Table::select(std::string & _info, std::string & Clause) {
 				}
 			}
 		}
+		
+		for (auto it = names.begin(); it != names.end(); it++) {
+			if (it != --names.end())
+				std::cout << *it << '\t';
+			else {
+				std::cout << *it;
+			}
+		}
+		std::cout << std::endl;
 
 		for (auto row : rows) {
 			if (WC.whereclause(row, Clause,attrs)) {
 				size_t i = 0;
 				for (; i < output.size() - 1; i++) {
-					std::cout << getData(row, output[i]) << ",";
+					std::cout << getData(row, output[i]) << "\t";
 				}
 				std::cout << getData(row, output[i]) << std::endl;
 			}
@@ -273,7 +299,6 @@ void Table::Delete(std::string & Clause) {
 	setAttrs();
 }
 
-//���Ǵ���������ʵ���߼���������
 void Table::updateData(std::istringstream& info)
 {
 	//UPDATE xxtable SET attrName = attrValue WHERE XXXXX;
@@ -286,14 +311,14 @@ void Table::updateData(std::istringstream& info)
 	while (attrs[index]->getName() != data && index < attr_num)index++;
 	if (index == attr_num) std::cout << "error" << std::endl;
 	info >> std::ws;//'='
-	info >> value;//�õ�value
+	info >> value;//得到value
 	info >> data;//"WHERE"
 	if (data != "WHERE") data = "";
-	else getline(info, data);//�õ��������
-	//todo:ʵ��WHERECLAUSE
+	else getline(info, data);//得到条件语句
+	//todo:实现WHERECLAUSE
 	for (std::list<std::string>::iterator it = rows.begin(); it != rows.end(); it++)
 	{
-		if (WC.whereclause(*it, data,attrs))//��������������WHERECLAUSE�ҵ���
+		if (WC.whereclause(*it, data, attrs))//遍历链表，根据WHERECLAUSE找到行
 		{
 			std::string& tmprow = *it;
 			if (attrs.size() > 1) {

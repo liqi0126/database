@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ui.h"
 #include "basesystem.h"
 #include <unordered_map>
@@ -7,6 +7,6 @@ class Controller {
 	UI ui;
 	BaseSystem system;
 public:
-	//ÊµÏÖBaseµÄ¸÷ÖÖ¹¦ÄÜ
+	//å®ç°Baseçš„å„ç§åŠŸèƒ½
 	void operate();
 };

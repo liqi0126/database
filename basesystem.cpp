@@ -1,7 +1,7 @@
-#include "basesystem.h"
+ï»¿#include "basesystem.h"
 
 void BaseSystem::addBase(const std::string & name) {
-	//Î´¿¼ÂÇÖØÃüÃûµÄÇé¿ö
+	//æœªè€ƒè™‘é‡å‘½åçš„æƒ…å†µ
 	DataBase *base = new DataBase;
 	bases.insert(std::pair<std::string, DataBase*>(name, base));
 	base_num++;
@@ -9,7 +9,7 @@ void BaseSystem::addBase(const std::string & name) {
 
 void BaseSystem::dropBase(std::string & base_name) {
 	if (bases.find(base_name) == bases.end()) {
-		std::cout << "Î´ÕÒµ½ÒªÉ¾³ıµÄÊı¾İ¿â" << std::endl;
+		std::cout << "æœªæ‰¾åˆ°è¦åˆ é™¤çš„æ•°æ®åº“" << std::endl;
 	}
 	else {
 		auto post = find(bases_name.begin(), bases_name.end(), base_name);

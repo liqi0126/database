@@ -1,28 +1,28 @@
-#pragma once
+ï»¿#pragma once
 #include "attr.h"
 #include <map>
 #include <string>
 #include <vector>
 #include <stack>
 
-//´ÓÒ»ĞĞÓÃ¶ººÅ·Ö¸ôµÄĞÅÏ¢ÖĞÕÒµ½µÚi¸öÊı¾İ
-std::string getData(std::string data, int i);
+//ä»ä¸€è¡Œç”¨é€—å·åˆ†éš”çš„ä¿¡æ¯ä¸­æ‰¾åˆ°ç¬¬iä¸ªæ•°æ®
+std::string getData(std::string data, int i, char sper = ',');
 
 
 class WhereClause {
-	//whereClauseÔËËãÓÅÏÈ¼¶
+	//whereClauseè¿ç®—ä¼˜å…ˆçº§
 	std::map<std::string, int> priority;
-	//ºó×º±í´ïÊ½
+	//åç¼€è¡¨è¾¾å¼
 	std::vector<std::string> Postfix;
 public:
 	WhereClause();
-	//»ñµÃÒ»¸öwhereclauseÓï¾äµÄºó×º±í´ïÊ½
+	//è·å¾—ä¸€ä¸ªwhereclauseè¯­å¥çš„åç¼€è¡¨è¾¾å¼
 	void setPostfix(std::string _clause);
-	//ÅĞ¶Ïµ¥¸öµÄjudgeÓï¾ä¶ÔÓÚÊı¾İdataÊÇ·ñÕıÈ·,attrsÎªÊı¾İÊôĞÔ
+	//åˆ¤æ–­å•ä¸ªçš„judgeè¯­å¥å¯¹äºæ•°æ®dataæ˜¯å¦æ­£ç¡®,attrsä¸ºæ•°æ®å±æ€§
 	bool Judge(std::string judge, const std::string & data, const std::vector<Attr*> & attrs);
-	//¼ÆËãºó×º±í´ïÊ½£¬ArrÎªµ¯³öµÄÔËËã·û£¬OperÎªÊı¾İÕ»£¬dataÎªµ±Ç°Êı¾İ£¬attrsÎªÊı¾İÊôĞÔ
+	//è®¡ç®—åç¼€è¡¨è¾¾å¼ï¼ŒArrä¸ºå¼¹å‡ºçš„è¿ç®—ç¬¦ï¼ŒOperä¸ºæ•°æ®æ ˆï¼Œdataä¸ºå½“å‰æ•°æ®ï¼Œattrsä¸ºæ•°æ®å±æ€§
 	void Calc(std::stack<std::string> & Oper, std::string & Arr, const std::string & data,const std::vector<Attr*> & attrs);
-	//ÅĞ¶ÏÊı¾İdataÊÇ·ñ·ûºÏclauseµÄÌõ¼ş,attrsÎªÊı¾İÊôĞÔ
+	//åˆ¤æ–­æ•°æ®dataæ˜¯å¦ç¬¦åˆclauseçš„æ¡ä»¶,attrsä¸ºæ•°æ®å±æ€§
 	bool whereclause(const std::string & data, const std::string & _clause, const std::vector<Attr*> & attrs);
 };
 
