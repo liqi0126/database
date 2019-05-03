@@ -47,7 +47,7 @@ void DataBase::select(std::string & _info) {
 }
 
 void DataBase::Delete(std::string & _info) {
-	int x1 = _info.find("from");
+	int x1 = _info.find("FROM");
 	std::string name = _info.substr(x1 + 5);
 
 	int x2 = name.find("WHERE");

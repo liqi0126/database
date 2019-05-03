@@ -1,9 +1,13 @@
-ï»¿#pragma once
+#pragma once
 #include <string>
 
 class UI {
 public:
-	//è¿™é‡Œæœ€å¥½æŠŠæ­£åˆ™åŒ–çš„å„ä¸ªåŠŸèƒ½åˆ†è£…æˆæ¥å£ï¼Œç„¶åå†ç»Ÿä¸€æ­£åˆ™åŒ–
+	//ÕâÀï×îºÃ°ÑÕıÔò»¯µÄ¸÷¸ö¹¦ÄÜ·Ö×°³É½Ó¿Ú£¬È»ºóÔÙÍ³Ò»ÕıÔò»¯
+	void findKeywords(std::string&);//²»Çø·Ö´óĞ¡Ğ´µØÕÒµ½¹Ø¼ü´Ê£¬²¢È«¸ÄÎª´óĞ´
+	void No_n(std::string&);//ÎŞÊÓ¶ÁÈëµÄ»»ĞĞ·û
+	void NoExtraSpace(std::string&);//È¥³ı¶àÓàµÄ¿Õ¸ñ
+
 	void preProcess(std::string&);
 	std::stringstream getCommand();
 };

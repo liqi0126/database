@@ -1,33 +1,62 @@
-ï»¿#include "ui.h"
+#include "ui.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
-//æ­£åˆ™åŒ–åŸåˆ™
-//1.æ¢è¡Œç¬¦è§†ä½œç©ºæ ¼
-//2.å¤šä¸ªè¿ç»­ç©ºæ ¼åªä¿ç•™ä¸€ä¸ªç©ºæ ¼
-//3.å»é™¤å·¦æ‹¬å·ã€å³æ‹¬å·ã€é€—å·ã€ç­‰å·ä¸¤ä¾§çš„ç©ºæ ¼
-//4.WHEREè¯­å¥çš„æ‹¬å·ä¸¤ä¾§éƒ½ä¿ç•™ä¸€ä¸ªç©ºæ ¼
+//ÕıÔò»¯Ô­Ôò
+//1.»»ĞĞ·ûÊÓ×÷¿Õ¸ñ
+//2.¶à¸öÁ¬Ğø¿Õ¸ñÖ»±£ÁôÒ»¸ö¿Õ¸ñ
+//3.È¥³ı×óÀ¨ºÅ¡¢ÓÒÀ¨ºÅ¡¢¶ººÅ¡¢µÈºÅÁ½²àµÄ¿Õ¸ñ
+//4.WHEREÓï¾äµÄÀ¨ºÅÁ½²à¶¼±£ÁôÒ»¸ö¿Õ¸ñ
 void UI::preProcess(std::string& sentence) {
-	size_t x1 = -1;
-	while (1)
+	findKeywords(sentence);
+	No_n(sentence);
+	NoExtraSpace(sentence);
+	return;
+}
+
+
+void UI::findKeywords(std::string& _info)
+{
+	std::string info(_info);
+	transform(info.begin(), info.end(), info.begin(), ::toupper);
+	std::string words[22] = { "CREATE","DATABASE","DATABASES","DROP","USE","SHOW","TABLE",
+		"NOT","NULL","PRIMARY","KEY","TABLES","COLUMNS","FROM","INSERT",
+		"INTO","VALUES","DELETE","WHERE","UPDATE","SET","SELECT" };
+	for (int i = 0; i < 22; i++)
 	{
-		x1 = sentence.find('\n', x1 + 1);
-		if (x1 != sentence.npos) sentence[x1] = ' ';
+		int x = -1;
+		while (true)
+		{
+			x = info.find(words[i], x + 1);
+			if (x == info.npos) break;
+			_info.replace(x, words[i].size(), words[i]);
+		}
+	}
+
+
+	return;
+}
+void UI::No_n(std::string& info)
+{
+	int x1 = -1;
+	while (true)
+	{
+		x1 = info.find('\n', x1 + 1);
+		if (x1 != info.npos) info[x1] = ' ';
 		else break;
 	}
-	x1 = -1;
+}
+void UI::NoExtraSpace(std::string& sentence)
+{
+	int x1 = -1;
 	while (sentence[0] == ' ') sentence.erase(0, 1);
 	while (sentence[sentence.size() - 1] == ' ')sentence.erase(sentence.size() - 1, 1);
 	while (1)
 	{
 		x1 = sentence.find(' ', x1 + 1);
-		if (x1 == sentence.npos)break;//æ‰¾ä¸åˆ°ç©ºæ ¼
-		if (x1 == sentence.size() - 1)//æ‰¾åˆ°çš„ç©ºæ ¼æ˜¯æœ€åä¸€ä¸ªå­—ç¬¦
-		{
-			sentence.erase(x1, 1);
-			break;
-		}
-		while (x1 + 1 < sentence.size() && sentence[x1 + 1] == ' ')
+		if (x1 == sentence.npos)break;//ÕÒ²»µ½¿Õ¸ñ
+		while (sentence[x1 + 1] == ' ')
 		{
 			sentence.erase(x1 + 1, 1);
 		}
@@ -81,7 +110,7 @@ void UI::preProcess(std::string& sentence) {
 		else break;
 	}
 	x1 = -1;
-	size_t x2 = 0;
+	int x2 = 0;
 	while (1)
 	{
 		x2 = sentence.find("WHERE", 0);
@@ -141,11 +170,9 @@ void UI::preProcess(std::string& sentence) {
 		}
 		else break;
 	}
-	return;
 }
-
 std::stringstream UI::getCommand() {
-	/*	
+	/*
 	if (std::cin.rdbuf()->in_avail() == 0 || std::cin.rdbuf()->in_avail() == 1)
 		std::cout << "mysql>";
 	*/

@@ -43,15 +43,17 @@ public:
 
 class IntData : public Data {
 protected:
-	int value;
+	int value = 0;
 public:
 	IntData(std::string _data) : Data(_data) {
-		value = stoi(data);
+		if(_data != "")
+			value = stoi(data);
 	}
 
 	void setData(std::string _data) {
 		data = _data;
-		value = stoi(data);
+		if (_data != "")
+			value = stoi(data);
 	}
 
 	int getValue() {
@@ -65,17 +67,21 @@ public:
 
 class DoubleData : public Data {
 protected:
-	double value;
+	double value = 0;
 public:
 	DoubleData(std::string _data) : Data(_data) {
-		std::stringstream data(_data);
-		data >> value;
+		if (_data != "") {
+			std::stringstream data(_data);
+			data >> value;
+		}
 	}
 
 	void setData(std::string _data) {
 		data = _data;
-		std::stringstream data(_data);
-		data >> value;
+		if (_data != "") {
+			std::stringstream data(_data);
+			data >> value;
+		}
 	}
 
 	double getValue() {

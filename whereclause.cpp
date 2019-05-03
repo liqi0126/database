@@ -16,8 +16,8 @@ WhereClause::WhereClause() {
 	//默认优先级
 	priority.insert(std::pair<std::string, int>("(", 0));
 	priority.insert(std::pair<std::string, int>(")", -1));
-	priority.insert(std::pair<std::string, int>("AND", -2));
-	priority.insert(std::pair<std::string, int>("OR", -3));
+	priority.insert(std::pair<std::string, int>("and", -2));
+	priority.insert(std::pair<std::string, int>("or", -3));
 }
 
 void WhereClause::setPostfix(std::string _clause) {
@@ -102,7 +102,7 @@ void WhereClause::Calc(std::stack<std::string> & Oper, std::string & Arr, const 
 	std::string oper2 = Oper.top();
 	Oper.pop();
 	bool judge, judge1 = Judge(oper1, data, attrs), judge2 = Judge(oper2, data, attrs);
-	if (Arr == "AND") {
+	if (Arr == "and") {
 		judge = judge1 && judge2;
 	}
 	else {

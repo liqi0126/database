@@ -226,55 +226,51 @@ void Table::setAttrs() {
 
 void Table::select(std::string & _info, std::string & Clause) {
 	Sort();
-	if (_info == "*") {
-		for (auto it = attrs.begin(); it != attrs.end(); it++) {
-			if(it != --attrs.end())
-				std::cout << (*it)->getName() << '\t';
-			else {
-				std::cout << (*it)->getName();
-			}
-		}
-		std::cout << std::endl;
+	std::istringstream info(_info);
+	std::vector<std::string> names;
+	std::string name;
 
-		for (auto it : rows) {
-			if (WC.whereclause(it, Clause,attrs))
-				std::cout << replaceAll(it,",","\t") << std::endl;
+	if (_info == "*") {
+		for (auto it : attrs) {
+			names.push_back(it->getName());
 		}
 	}
 	else {
-		std::istringstream info(_info);
-		std::vector<std::string> names;
-		std::string name;
-
 		while (getline(info, name, ',')) {
 			names.push_back(name);
 		}
+	}
 
-		std::vector<int> output;
-		for (size_t i = 0; i < names.size(); i++) {
-			for (int j = 0; j < attr_num; j++) {
-				if (attrs[j]->getName() == names[i]) {
-					output.push_back(j);
-				}
+	std::vector<int> output;
+	for (size_t i = 0; i < names.size(); i++) {
+		for (int j = 0; j < attr_num; j++) {
+			if (attrs[j]->getName() == names[i]) {
+				output.push_back(j);
 			}
 		}
+	}
 		
-		for (auto it = names.begin(); it != names.end(); it++) {
-			if (it != --names.end())
-				std::cout << *it << '\t';
-			else {
-				std::cout << *it;
-			}
+	//输出表头
+	for (auto it = names.begin(); it != names.end(); it++) {
+		if (it != --names.end())
+			std::cout << *it << '\t';
+		else {
+			std::cout << *it;
 		}
-		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 
-		for (auto row : rows) {
-			if (WC.whereclause(row, Clause,attrs)) {
-				size_t i = 0;
-				for (; i < output.size() - 1; i++) {
+	//输出数据
+	for (auto row : rows) {
+		if (WC.whereclause(row, Clause,attrs)) {
+			size_t i = 0;
+			for (; i < output.size(); i++) {
+				if (i == output.size() - 1) {
+					std::cout << getData(row, output[i]) << std::endl;
+				}
+				else {
 					std::cout << getData(row, output[i]) << "\t";
 				}
-				std::cout << getData(row, output[i]) << std::endl;
 			}
 		}
 	}
