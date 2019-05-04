@@ -69,7 +69,7 @@ void Table::init(std::string & _info) {
 }
 
 void Table::addData(std::string & _info) {
-	row_num++;
+	
 	std::istringstream info(_info);
 	std::string data;
 	getline(info, data, '(');
@@ -100,16 +100,45 @@ void Table::addData(std::string & _info) {
 	//检查notnull
 	for (auto it : not_null) {
 		if (find(attrId.begin(), attrId.end(), it) == attrId.end()) {
-			std::cout << attrs[it]->getName() << "不允许为空"<< std::endl;
+			std::cout << "ERROR:'"<<attrs[it]->getName() << "'不允许为空"<< std::endl;
 			return;
 		}
 	}
+
 
 	//数据
 	std::string new_row;
 	std::vector<Data*> new_attr;
 	getline(info, data, '(');
 	getline(info, data, ')');
+	//检查主键
+	if (find(attrId.begin(), attrId.end(), key) != attrId.end())
+	{
+		int j;
+		for (j = 0; j < attrId.size(); j++) {
+			if (attrId[j] == key) {
+				break;
+			}
+		}
+		std::string tp = data;
+		int index = -1;
+		while (j--)
+		{
+			index = tp.find(',', index + 1);
+		}
+		int index2 = tp.find(',', index + 1);
+		if (index2 == tp.npos) index2 = tp.size();
+		tp = tp.substr(index+1, index2 - index-1);
+		for (auto it : attrs[key]->getDatas())
+		{
+			if (it->getData() == tp)
+			{
+				std::cout << "ERROR:主键重复，不可插入" << std::endl;
+				return;
+			}
+		}
+	}
+	row_num++;
 	for (int i = 0; i < attr_num; i++) {
 		//查找是否有相应的数据
 		size_t j;
@@ -305,13 +334,17 @@ void Table::updateData(std::istringstream& info)
 	getline(info, data, '=');
 	int index = 0;
 	while (attrs[index]->getName() != data && index < attr_num)index++;
-	if (index == attr_num) std::cout << "error" << std::endl;
+	if (index == attr_num)
+	{
+		std::cout << "ERROR:未找到'" <<data<<"'"<< std::endl;
+		return;
+	}
 	info >> std::ws;//'='
 	info >> value;//得到value
 	info >> data;//"WHERE"
 	if (data != "WHERE") data = "";
 	else getline(info, data);//得到条件语句
-	//todo:实现WHERECLAUSE
+
 	for (std::list<std::string>::iterator it = rows.begin(); it != rows.end(); it++)
 	{
 		if (WC.whereclause(*it, data, attrs))//遍历链表，根据WHERECLAUSE找到行
@@ -325,36 +358,127 @@ void Table::updateData(std::istringstream& info)
 				}
 				int x2 = tmprow.find(',', x1 + 1);
 				if (x2 == tmprow.npos) x2 = tmprow.size();
-				tmprow.replace(x1 + 1, x2 - x1 - 1, value);
+				if (tmprow.substr(x1 + 1, x2 - x1 - 1) != value)
+				{
+					if (index == key)
+					{
+						bool t = false;
+						for (auto itt : attrs[key]->getDatas())
+						{
+							if (itt->getData() == value)
+							{
+								std::cout << "ERROR:主键重复，不可更新" << std::endl;
+								t = true;
+								break;
+							}
+						}
+						if (t) continue;
+					}
+
+					tmprow.replace(x1 + 1, x2 - x1 - 1, value);
+				}
 			}
-			else tmprow = value;
+			else if (tmprow != value)
+			{
+				if (index == key)
+				{
+					bool t = false;
+					for (auto itt : attrs[key]->getDatas())
+					{
+						if (itt->getData() == value)
+						{
+							std::cout << "ERROR:主键重复，不可更新" << std::endl;
+							t = true;
+							break;
+						}
+					}
+					if (t) continue;
+				}
+				tmprow = value;
+			}
 		}
 	}
 	setAttrs();
 }
 
+#define TAB 8
+#define SPACE 1
 void Table::show_table_colums() {
-	std::cout << "Field   Type    Null    Key Default Extra" << std::endl;
+	std::cout << "Field\tType\tNull\tKey\tDefault\tExtra" << std::endl;
+	int delayed = 0;
 	for (int i = 0; i < attr_num; i++) {
-		std::cout << attrs[i]->getName() << " ";
+		std::string name = attrs[i]->getName();
+		std::cout <<name;
+		if (name.size() < TAB) std::cout << "\t";
+		else
+		{
+			std::cout << " ";
+			delayed = name.size() - TAB + SPACE;
+		}
+
 		std::string type = attrs[i]->getType();
 		transform(type.begin(), type.end(), type.begin(), ::tolower);
-		if (type == "int") {
-			std::cout << "int(11) ";
+		if (type == "int")
+		{
+			std::cout << "int(11)";
+			if (7 + delayed < TAB) std::cout << "\t";
+			else std::cout << " ";
 		}
-		else {
-			if (type == "char")
-				std::cout << "char(1) ";
-			else std::cout << type << "  ";
+		else if (type == "char")
+		{
+			std::cout << "char(1)";
+			if (7 + delayed < TAB) std::cout << "\t";
+			else std::cout << " ";
 		}
+		else
+		{
+			std::cout << type;
+			if (type.size()+delayed < TAB) std::cout << "\t";
+			else
+			{
+				std::cout << " ";
+				delayed = type.size() +delayed- TAB + SPACE;
+			}
+		}
+		//输出NOT NULL信息
 		auto inotnull = find(not_null.begin(), not_null.end(), i);
 		if (inotnull != not_null.end()) {
-			std::cout << "NO  ";
+			std::cout << "NO";
+			if (2 + delayed < TAB) std::cout << "\t";
+			else
+			{
+				std::cout << " ";
+				delayed= 2 + delayed - TAB + SPACE;
+			}
 		}
-		else std::cout << "YES ";
+		else { 
+			std::cout << "YES";
+			if (3 + delayed < TAB) std::cout << "\t";
+			else
+			{
+				std::cout << " ";
+				delayed = 3 + delayed - TAB + SPACE;
+			}
+		}
+		//输出主键信息
 		if (i == key) {
-			std::cout << "PRI NULL" << std::endl;
+			std::cout << "PRI";
+			if (3 + delayed < TAB) std::cout << "\t";
+			else
+			{
+				std::cout << " ";
+				delayed = 3 + delayed - TAB + SPACE;
+			}
 		}
-		else std::cout << "    NULL" << std::endl;
+		else {
+			if (delayed < TAB) std::cout << "\t";
+			else
+			{
+				std::cout << " ";
+				delayed = delayed - TAB + SPACE;
+			}
+		}
+		//DEFAULT AND EXTRA??
+		std::cout << "NULL" << std::endl;
 	}
 }

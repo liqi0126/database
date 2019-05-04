@@ -17,16 +17,23 @@ void DataBase::updateData(std::string& _info)
 	std::istringstream info(_info);
 	std::string Tablename;
 	info >> Tablename;
-	tables[Tablename]->updateData(info);
+	if (tables[Tablename] == NULL)
+	{
+		std::cout << "ERROR:未找到数据表'" << Tablename << "'" << std::endl;
+	}
+	else tables[Tablename]->updateData(info);
 }
 
 void DataBase::addData(std::string & _info) {
 	std::istringstream info(_info);
 	std::string Tablename;
-	info >> Tablename;
 	getline(info, Tablename, ' ');
 	getline(info, Tablename, '(');
-	tables[Tablename]->addData(_info);
+	if (tables[Tablename] == NULL)
+	{
+		std::cout << "ERROR:未找到数据表'"<<Tablename <<"'"<< std::endl;
+	}
+	else tables[Tablename]->addData(_info);
 }
 
 void DataBase::select(std::string & _info) {
@@ -43,11 +50,20 @@ void DataBase::select(std::string & _info) {
 	else {
 		whereClause = "";
 	}
-	tables[name]->select(_info, whereClause);
+	if (tables[name] == NULL)
+	{
+		std::cout << "ERROR:未找到数据表'" <<name<<"'"<< std::endl;
+	}
+	else tables[name]->select(_info, whereClause);
 }
 
 void DataBase::Delete(std::string & _info) {
 	int x1 = _info.find("FROM");
+	if (x1 == _info.npos)
+	{
+		std::cout << "ERROR:未识别的命令" << std::endl;
+		return;
+	}
 	std::string name = _info.substr(x1 + 5);
 
 	int x2 = name.find("WHERE");
@@ -59,14 +75,28 @@ void DataBase::Delete(std::string & _info) {
 	else {
 		whereClause = "";
 	}
-	tables[name]->Delete(whereClause);
+	if (tables[name] == NULL)
+	{
+		std::cout << "ERROR:未找到数据表'" <<name<<"'"<< std::endl;
+	}
+	else tables[name]->Delete(whereClause);
 }
 
 void DataBase::showTable() {//输出表名 
+	bool isnull = true;
 	for (auto it = tables.begin(); it != tables.end(); it++) {
-		auto its = find(table_header.begin(), table_header.end(), it->first);
-		if (its == table_header.end())
-			table_header.push_back(it->first);
+		if (it->second != NULL)
+		{
+			isnull = false;
+			auto its = find(table_header.begin(), table_header.end(), it->first);
+			if (its == table_header.end())
+				table_header.push_back(it->first);
+		}
+	}
+	if (isnull)
+	{
+		std::cout << "NULL" << std::endl;
+		return;
 	}
 	sort(table_header.begin(), table_header.end());
 	for (auto it = table_header.begin(); it != table_header.end(); it++) {
@@ -79,12 +109,12 @@ void DataBase::show_table_colums(const std::string& table_name) {
 	if (its != tables.end()) {
 		tables[table_name]->show_table_colums();
 	}
-	else std::cout << "NULL" << std::endl;
+	else std::cout << "ERROR:未找到数据表'" <<table_name<<"'"<< std::endl;
 }
 
 void DataBase::dropTable(std::string& table_name) {
 	if (tables.find(table_name) == tables.end()) {
-		std::cout << "未找到要删除的数据表" << std::endl;
+		std::cout << "ERROR:未找到数据表'" <<table_name<<"'"<< std::endl;
 	}
 	else {
 		auto era = find(table_header.begin(), table_header.end(), table_name);

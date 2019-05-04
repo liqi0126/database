@@ -29,6 +29,7 @@ void UI::findKeywords(std::string& _info)
 	words.push_back("USE");
 	words.push_back("SHOW");
 	words.push_back("TABLE");
+	words.push_back("TABLES");
 	words.push_back("NOT");
 	words.push_back("NULL");
 	words.push_back("PRIMARY");

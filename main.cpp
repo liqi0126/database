@@ -4,4 +4,5 @@
 int main() {
 	Controller controller;
 	controller.operate();
+	return 0;
 }

@@ -23,13 +23,12 @@ void Controller::operate() {
 				system.setTable(order);
 			}
 			else {
-				std::cout << "未识别的命令" << std::endl;
+				std::cout << "ERROR:未识别的命令" << std::endl;
 			}
 		}
 		//切换数据库
 		else if (order == "USE") {
-			getline(myinput, order, ' ');
-			getline(myinput, order);
+			myinput >> order;
 			show = order;
 			system.setBase(order);
 		}
@@ -37,21 +36,28 @@ void Controller::operate() {
 		else if (order == "DROP") {
 			myinput >> order;
 			if (order == "DATABASE") {
-				getline(myinput, order, ' ');
-				getline(myinput, order);
+				myinput >> order;
 				system.dropBase(order);
 			}
 			else if (order == "TABLE") {
-				getline(myinput, order, ' ');
-				getline(myinput, order);
-				system.dropTable(show,order);
+				myinput >> order;
+				system.dropTable(order);
+			}
+			else {
+				std::cout << "ERROR:未识别的命令" << std::endl;
 			}
 		}
 		//列出所有数据库及其包含的所有表名
 		else if (order == "INSERT") {
-			getline(myinput, order, ' ');
-			getline(myinput, order);
-			system.addData(order);
+			myinput >> order;
+			if (order == "INTO")
+			{
+				getline(myinput, order);
+				system.addData(order);
+			}
+			else {
+				std::cout << "ERROR:未识别的命令" << std::endl;
+			}
 		}
 		else if (order == "SHOW") {
 			myinput >> order;
@@ -61,11 +67,13 @@ void Controller::operate() {
 			else if (order == "TABLES") {
 				system.showTable(show);
 			}
+			else if(order=="COLUMNS"){
+				myinput >> order;
+				myinput >> order;
+				system.show_table_colums(order);
+			}
 			else {
-				getline(myinput, order, ' ');
-				getline(myinput, order, ' ');
-				getline(myinput, order);
-				system.show_table_colums(show, order);
+				std::cout << "ERROR:未识别的命令" << std::endl;
 			}
 		}
 		//表的数据删除
@@ -90,8 +98,8 @@ void Controller::operate() {
 			break;
 		}
 		else {
-			break;
-			std::cout << "未识别的命令" << std::endl;
+			break;//为了过OJ设置的break
+			std::cout << "ERROR:未识别的命令" << std::endl;
 		}
 	}
 }

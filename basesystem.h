@@ -15,8 +15,8 @@ public:
 	void addBase(const std::string & name);
 
 	void setBase(const std::string & name) {
-		//未考虑找不到的情况
-		cur_base = bases[name];
+		if (bases[name] == NULL) std::cout << "ERROR:未找到数据库'" << name << "'" << std::endl;
+		else cur_base = bases[name];
 	}
 
 	void setTable(std::string & _info) {
@@ -41,7 +41,7 @@ public:
 
 	void showBase();
 	void showTable(std::string& base_name);
-	void show_table_colums(std::string& base_name, std::string& table_name);
+	void show_table_colums(std::string& table_name);
 	void dropBase(std::string& base_name);
-	void dropTable( std::string &base_name,std::string& table_name);
+	void dropTable(std::string& table_name);
 };

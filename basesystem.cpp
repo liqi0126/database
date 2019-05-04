@@ -9,7 +9,7 @@ void BaseSystem::addBase(const std::string & name) {
 
 void BaseSystem::dropBase(std::string & base_name) {
 	if (bases.find(base_name) == bases.end()) {
-		std::cout << "未找到要删除的数据库" << std::endl;
+		std::cout << "ERROR:未找到要删除的数据库'" << base_name<<"'"<<std::endl;
 	}
 	else {
 		delete bases[base_name];
@@ -20,8 +20,18 @@ void BaseSystem::dropBase(std::string & base_name) {
 void BaseSystem::showBase() {
 	std::vector<std::string> bases_name;
 	std::cout << "Database" << std::endl;
+	bool isnull = true;
 	for (auto it : bases) {
-		bases_name.push_back(it.first);
+		if (it.second != NULL)
+		{
+			bases_name.push_back(it.first);
+			isnull = false;
+		}
+	}
+	if (isnull)
+	{
+		std::cout << "NULL" << std::endl;
+		return;
 	}
 	sort(bases_name.begin(), bases_name.end());
 	for (auto it : bases_name) {
@@ -34,10 +44,10 @@ void BaseSystem::showTable(std::string& base_name) {
 	bases[base_name]->showTable();
 }
 
-void BaseSystem::show_table_colums(std::string& base_name, std::string& table_name) {
-	bases[base_name]->show_table_colums(table_name);
+void BaseSystem::show_table_colums(std::string& table_name) {
+	cur_base->show_table_colums(table_name);
 }
 
-void BaseSystem::dropTable(std::string &base_name,std::string & table_name){
-	bases[base_name]->dropTable(table_name);
+void BaseSystem::dropTable(std::string & table_name){
+	cur_base->dropTable(table_name);
 }
